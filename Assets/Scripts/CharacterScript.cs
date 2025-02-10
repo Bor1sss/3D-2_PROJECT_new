@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 
 public class CharacterScript : MonoBehaviour
 {
-
-
     private InputAction moveAction;
     private InputAction jumpAction;
     private CharacterController characterController;
