@@ -1,4 +1,11 @@
 # 3D-2_PROJECT-3
+![image](https://github.com/user-attachments/assets/abf1b290-4d02-43c7-bb1b-763fede2e50f)
+![image](https://github.com/user-attachments/assets/c4b58b4f-d1a4-462b-b35b-33ad209ab84c)
+
+
+
+
+
  
 https://drive.google.com/file/d/1AcmPIlk45zO83bvnQjnz_c7xzumDfWeU/view?usp=sharing - video
 
