@@ -34,6 +34,6 @@ public class CameraScript : MonoBehaviour
     {
         this.transform.eulerAngles = cameraAngles;
         this.transform.position = cameraAnchor.position +
-            Quaternion.Euler(cameraAngles) * cameraOffset;
+                                  Quaternion.Euler(cameraAngles) * cameraOffset;
     }
 }

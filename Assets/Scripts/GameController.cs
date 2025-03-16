@@ -8,6 +8,12 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private GameObject character;
 
+    private float minCoinCharacterDistance = 10.0f;
+    private float maxCoinCharacterDistance = 30.0f;
+    private float spawnOffset = 50.0f;
+    private float minCoinSpawnHeight = 0.8f;
+    private float maxCoinSpawnHeight = 4.0f;
+
     void Start()
     {
         GameEventSystem.AddListener(OnCoinEvent, "Coin");
@@ -15,23 +21,58 @@ public class GameController : MonoBehaviour
 
     private void OnCoinEvent(string type, object payload)
     {
-        if (!character)
-        {
-            Debug.LogError("Character is not assigned!");
-            return;
-        }
-
-        Debug.Log($"Character name: {character.name}, position: {character.transform.position}");
-
         if (payload.Equals("Destroy"))
         {
-            var coin = Instantiate(coinPrefab);
-            coin.transform.position = character.transform.position + character.transform.forward * 3;
+            if (GameObject.FindGameObjectsWithTag("Coin").Length <= 1)
+            {
+                SpawnCoin();
+            }
+            if (Random.value < 0.5f) SpawnCoin();
+            if (Random.value < 0.5f) SpawnCoin();
         }
-        Debug.Log($"Event: {type}, payload: {payload}");
+        //Debug.Log($"Event: {type} {payload}");
     }
 
+    private void SpawnCoin()
+    {
+        /* Умови створення нової 
+            - не ближче за 10 (minCoinCharacterDistance) від персонажу
+            - не далі за 30 (maxCoinCharacterDistance) від персонажу
+            - розміщення випадкове - як попереду, так і позаду персонажу
+            - не ближче за 50 (spawnOffset) від краю світу (мапи)
+            - по висоті: випадково, але у досяжності персонажа Срозмір +
+            У новій позиціЇ монета не пертинєс з нши коле
+            */
 
+        Vector3 coinDelta;
+        Vector3 newPosition;
+        int cnt = 0;
+        do
+        {
+            coinDelta = new Vector3(
+            Random.Range(-maxCoinCharacterDistance, maxCoinCharacterDistance),
+            0,
+            Random.Range(-maxCoinCharacterDistance, maxCoinCharacterDistance)
+            );
+            newPosition = character.transform.position + coinDelta;
+            cnt += 1;
+        }
+        while (cnt < 100 && (
+            coinDelta.magnitude < minCoinCharacterDistance ||
+            coinDelta.magnitude > maxCoinCharacterDistance ||
+            newPosition.x < spawnOffset ||
+            newPosition.z < spawnOffset ||
+            newPosition.x > 1000 - spawnOffset ||
+            newPosition.z > 1000 - spawnOffset
+        ));
+
+        float terrainHeight = Terrain.activeTerrain.SampleHeight(newPosition);
+        newPosition.y = terrainHeight + Random.Range(-minCoinSpawnHeight, maxCoinSpawnHeight);
+
+        var coin = GameObject.Instantiate(coinPrefab);
+        coin.transform.position = newPosition;
+        GameEventSystem.EmitEvent("CoinSpawn", coin);
+    }
 
     private void OnDestroy()
     {
