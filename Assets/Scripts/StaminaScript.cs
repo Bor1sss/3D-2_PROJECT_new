@@ -18,10 +18,10 @@ public class StaminaScript : MonoBehaviour
     {
         indicator.fillAmount = Mathf.Clamp01(GameState.stamina / GameState.staminaLimit);
         indicator.color = new Color(
-                0.15f + (1.0f - indicator.fillAmount) * 0.62f,
-                0.15f + indicator.fillAmount * 0.62f,
-                0.1f
-            );
+            0.15f + (1.0f - indicator.fillAmount) * 0.62f,
+            0.15f + indicator.fillAmount * 0.62f,
+            0.1f
+        );
     }
 
     private void OnGameStateChangedEvent(string type, object payload)

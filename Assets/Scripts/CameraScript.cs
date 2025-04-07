@@ -13,11 +13,11 @@ public class CameraScript : MonoBehaviour
     private float cameraMaxV = 35.0f;
     private float cameraMinV = -75.0f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         lookAction = InputSystem.actions.FindAction("Look");
-        cameraOffset = this.transform.position - cameraAnchor.position; ;
+        cameraOffset = this.transform.position - cameraAnchor.position;
+        GameState.activeSceneIndex = 1;
     }
 
     private void Update()
@@ -29,7 +29,6 @@ public class CameraScript : MonoBehaviour
         cameraAngles.y += lookValue.x * cameraSensitivityHorizontal;
     }
 
-    // Update is called once per frame
     void LateUpdate()
     {
         this.transform.eulerAngles = cameraAngles;
